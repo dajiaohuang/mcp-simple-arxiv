@@ -4,6 +4,7 @@ arXiv API client with rate limiting.
 
 import asyncio
 import logging
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
@@ -69,7 +70,7 @@ class ArxivClient:
         by modifying the PDF URL pattern.
         """
         # Remove version suffix if present (e.g., v1, v2)
-        base_id = arxiv_id.split('v')[0]
+        base_id = re.sub(r'v[0-9]+$', '', arxiv_id)
         return f"https://arxiv.org/html/{base_id}"
 
     def _parse_entry(self, entry: Dict[str, Any]) -> Dict[str, Any]:
